@@ -30,6 +30,3 @@ jobs:
           owner: 'github_actions'
           repository: 'https://github.com/llvm/llvm-project.git'
 
-      - name: 编译
-        run: |
-          

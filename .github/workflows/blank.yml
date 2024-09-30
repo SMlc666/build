@@ -27,6 +27,6 @@ jobs:
         uses: GuillaumeFalourd/clone-github-repo-action@v2.1
         with:
           depth: 1
-          owner: 'github_actions'
-          repository: 'https://github.com/llvm/llvm-project.git'
+          owner: 'llvm'
+          repository: 'llvm-project'
 
