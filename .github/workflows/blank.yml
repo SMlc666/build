@@ -55,11 +55,5 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: 上传编译产物
-          path: |
-            lib/
-            bin/
-            include/
-            projects/
-            share/
-            tools/
+          path: .
           compression-level: 0 # no compression
