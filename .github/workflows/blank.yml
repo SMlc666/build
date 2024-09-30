@@ -21,7 +21,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install python3 cmake ninja-build git python3-pip libedit-dev libncurses5-dev libncursesw5-dev libtinfo5
-          sudo apt-get -y install crossbuild-essential-arm64 llvm build-essential lld
+          sudo apt-get -y install crossbuild-essential-arm64 llvm build-essential lld binutils-aarch64-linux-gnu linux-libc-dev-arm64-cross clang g++-arm-linux-gnueabihf  gcc-arm-linux-gnueabihf
           
       # Runs a set of commands using the runners shell
       - name: 拉取llvm
@@ -39,8 +39,12 @@ jobs:
             -DLLVM_TARGETS_TO_BUILD="AArch64" \
             -DLLVM_ENABLE_LLD=ON \
             -DLLVM_DEFAULT_TARGET_TRIPLE=aarch64-unknown-linux-gnu \
+            -DLLVM_DYLIB_COMPONENTS="all" \
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_PROJECTS="all" \
+            -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON \
+            -DCMAKE_C_COMPILER=clang \
+            -DCMAKE_CXX_COMPILER=clang++ \
             ../llvm
           ninja -j 8
 
