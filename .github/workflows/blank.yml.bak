@@ -43,11 +43,30 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_PROJECTS="all" \
             -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON \
+            -DCMAKE_C_COMPILER=clang \
+            -DLLVM_INCLUDE_TESTS=OFF \
+            -DCMAKE_CXX_COMPILER=clang++ \
             ../llvm
           ninja -j 8
-
+     - name: 列出文件
+       run: |
+        if [ ! -d "lib" ]; then mkdir lib; fi
+        if [ ! -d "bin" ]; then mkdir bin; fi
+        if [ ! -d "include" ]; then mkdir include; fi
+        if [ ! -d "projects" ]; then mkdir projects; fi
+        if [ ! -d "share" ]; then mkdir share; fi
+        if [ ! -d "tools" ]; then mkdir tools; fi
+ 
+        
+     - name: 打包build
       - uses: actions/upload-artifact@v4
         with:
           name: 上传编译产物
-          path: .
+          path: |
+            lib/
+            bin/
+            include/
+            projects/
+            share/
+            tools/
           compression-level: 0 # no compression
