@@ -49,7 +49,7 @@ jobs:
             ../llvm
           ninja -j 8
      - name: 列出文件夹
-      run:
+      run: |
         ls
      - name: 创建文件夹
        run: |

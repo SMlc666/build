@@ -48,7 +48,10 @@ jobs:
             -DCMAKE_CXX_COMPILER=clang++ \
             ../llvm
           ninja -j 8
-     - name: 列出文件
+     - name: 列出文件夹
+      run:
+        ls
+     - name: 创建文件夹
        run: |
         if [ ! -d "lib" ]; then mkdir lib; fi
         if [ ! -d "bin" ]; then mkdir bin; fi
