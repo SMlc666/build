@@ -24,6 +24,9 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: 拉取llvm
-        run: |
-          git clone https://github.com/llvm/llvm-project.git
-          cd llvm-project
+        uses: GuillaumeFalourd/clone-github-repo-action@v2.1
+        with:
+          depth: 1
+          owner: 'github_actions'
+          repository: 'https://github.com/llvm/llvm-project.git'
+
