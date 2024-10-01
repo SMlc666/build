@@ -58,11 +58,14 @@ jobs:
         with:
           path: ~/.ccache
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/*.cpp') }}
-
+      - name: 切换文件夹
+        run: |
+         cd llvm-project
+         cd build
       - name: 列出文件夹
         run: |
           ls
-
+          pwd
       - name: 创建文件夹
         run: |
          if [ ! -d "lib" ]; then mkdir lib; fi
