@@ -56,6 +56,10 @@ jobs:
             ../llvm
           ninja -j 8
 
+      - name: ccache命中信息
+        run: |
+          ccache -s
+
       - name: 缓存ccache
         uses: actions/cache@v2
         with:
