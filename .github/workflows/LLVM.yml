@@ -30,12 +30,27 @@ jobs:
         with:
           path: ~/.ccache
           key: ${{ runner.os }}-ccache-LLVM
-
+      
+      - name: 打开缓存代码
+        uses: actions/cache@v2
+        with:
+          path: ~/llvm-project
+          key: ${{ runner.os }}-codecache-LLVM
       # Runs a set of commands using the runners shell
       - name: 拉取llvm
         run: |
-          git clone --depth 1 -b main https://github.com/llvm/llvm-project.git
-          
+          if [ ! -d "llvm-project"]; then git clone --depth 1 -b main https://github.com/llvm/llvm-project.git; fi
+      - name: 打开缓存代码
+        uses: actions/cache@v2
+        with:
+          path: ~/llvm-project
+          key: ${{ runner.os }}-codecache-LLVM
+       - name: 打开缓存ccache
+        uses: actions/cache@v2
+        with:
+          path: ~/llvm-project
+          key: ${{ runner.os }}-codecache-LLVM
+      # Runs a set of commands using the runners shell
       - name: 编译llvm
         run: |
           cd llvm-project
