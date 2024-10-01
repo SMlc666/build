@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install python3 cmake ninja-build git python3-pip libedit-dev libncurses5-dev libncursesw5-dev libtinfo5
-          sudo apt-get -y install crossbuild-essential-arm64 llvm build-essential lld binutils-aarch64-linux-gnu linux-libc-dev-arm64-cross clang g++-arm-linux-gnueabihf  gcc-arm-linux-gnueabihf ccache
+          sudo apt-get -y install crossbuild-essential-arm64 llvm build-essential lld binutils-aarch64-linux-gnu linux-libc-dev-arm64-cross clang g++-arm-linux-gnueabihf  gcc-arm-linux-gnueabihf ccache make
 
       - name: 配置ccache
         run: |
@@ -29,31 +29,17 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.ccache
-          key: ${{ runner.os }}-ccache-${{ hashFiles('**/*.cpp') }}
+          key: ${{ runner.os }}-ccache-kernel
 
       # Runs a set of commands using the runners shell
-      - name: 拉取llvm
+      - name: 拉取kernel
         run: |
-          git clone --depth 1 -b main https://github.com/llvm/llvm-project.git
+          git clone --depth 1 -b lxr https://github.com/Tkpointz/android_kernel_aresin
           
-      - name: 编译llvm
+      - name: 编译kernel
         run: |
-          cd llvm-project
-          mkdir build && cd build
-          cmake -G Ninja \
-            -DLLVM_TARGETS_TO_BUILD="AArch64" \
-            -DLLVM_ENABLE_LLD=ON \
-            -DLLVM_DEFAULT_TARGET_TRIPLE=aarch64-unknown-linux-gnu \
-            -DLLVM_DYLIB_COMPONENTS="all" \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DLLVM_ENABLE_PROJECTS="all" \
-            -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON \
-            -DCMAKE_C_COMPILER_LAUNCHER=clang \
-            -DCMAKE_C_COMPILER_LAUNCHER=clang++ \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-            ../llvm
-          ninja -j 8
+          cd android_kernel_aresin
+          make -j8 ARCH=arm64 CC="ccache clang" O=out LD=ld.lld
 
       - name: ccache命中信息
         run: |
@@ -63,7 +49,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.ccache
-          key: ${{ runner.os }}-ccache-${{ hashFiles('**/*.cpp') }}
+          key: ${{ runner.os }}-ccache-kernel
 
       - name: 切换文件夹
         run: |
