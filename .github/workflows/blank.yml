@@ -19,16 +19,17 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get -y install python3 cmake ninja-build git python3-pip libedit-dev libncurses5-dev libncursesw5-dev libtinfo5
-          sudo apt-get -y install crossbuild-essential-arm64 llvm build-essential lld binutils-aarch64-linux-gnu linux-libc-dev-arm64-cross clang g++-arm-linux-gnueabihf  gcc-arm-linux-gnueabihf
-          
+          sudo apt-get -y install crossbuild-essential-arm64 llvm build-essential lld binutils-aarch64-linux-gnu linux-libc-dev-arm64-cross clang g++-arm-linux-gnueabihf  gcc-arm-linux-gnueabihf ccache
+
+      - name: 配置ccache
+        run: |
+          ccache -M 7G  # 设置最大缓存大小为7GB
+
       # Runs a set of commands using the runners shell
       - name: 拉取llvm
-        uses: GuillaumeFalourd/clone-github-repo-action@v2.1
-        with:
-          depth: 1
-          owner: 'llvm'
-          repository: 'llvm-project'
-
+        run: |
+          git clone --depth 1 -b main https://github.com/llvm/llvm-project.git
+          
       - name: 编译llvm
         run: |
           cd llvm-project
@@ -45,7 +46,14 @@ jobs:
             -DCMAKE_CXX_COMPILER=clang++ \
             ../llvm
           ninja -j 8
-
+       
+      - name: 缓存ccache
+        uses: actions/cache@v2
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('**/*.cpp') }}
+   
+ 
       - name: 列出文件夹
         run: |
           ls
