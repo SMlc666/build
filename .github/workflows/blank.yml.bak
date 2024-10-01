@@ -23,8 +23,12 @@ jobs:
 
       - name: 配置ccache
         run: |
-          ccache -M 7G  # 设置最大缓存大小为7GB
-
+          ccache -M 7G  # 设置最大缓存大小为7G
+      - name: 缓存ccache
+        uses: actions/cache@v2
+        with:
+          path: ~/.ccache
+          key: ${{ runner.os }}-ccache-${{ hashFiles('**/*.cpp') }}
       # Runs a set of commands using the runners shell
       - name: 拉取llvm
         run: |
@@ -46,14 +50,13 @@ jobs:
             -DCMAKE_CXX_COMPILER=clang++ \
             ../llvm
           ninja -j 8
-       
+
       - name: 缓存ccache
         uses: actions/cache@v2
         with:
           path: ~/.ccache
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/*.cpp') }}
-   
- 
+
       - name: 列出文件夹
         run: |
           ls
