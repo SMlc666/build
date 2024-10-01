@@ -47,7 +47,7 @@ jobs:
             ../llvm
           ninja -j 8
        
-      - name: Cache ccache
+      - name: 缓存ccache
         uses: actions/cache@v2
         with:
           path: ~/.ccache

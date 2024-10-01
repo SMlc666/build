@@ -46,14 +46,13 @@ jobs:
             -DCMAKE_CXX_COMPILER=clang++ \
             ../llvm
           ninja -j 8
-       
+
       - name: 缓存ccache
         uses: actions/cache@v2
         with:
           path: ~/.ccache
           key: ${{ runner.os }}-ccache-${{ hashFiles('**/*.cpp') }}
-   
- 
+
       - name: 列出文件夹
         run: |
           ls
