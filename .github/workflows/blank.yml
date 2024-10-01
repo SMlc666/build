@@ -48,8 +48,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_PROJECTS="all" \
             -DLLVM_INSTALL_TOOLCHAIN_ONLY=ON \
-            -DCMAKE_C_COMPILER=clang \
-            -DCMAKE_CXX_COMPILER=clang++ \
+            -DCMAKE_C_COMPILER=ccache \
+            -DCMAKE_CXX_COMPILER=ccache \
             ../llvm
           ninja -j 8
 
