@@ -38,13 +38,15 @@ jobs:
           cd build
           cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS="/utf-8" -DLLVM_ENABLE_RTTI=ON -DLLVM_ENABLE_EH=ON -DLLVM_ENABLE_PROJECTS="clang;lld" ../llvm
           ninja -j8
+      - name: lss
+        run: ls
       - uses: actions/upload-artifact@v4
         with:
           name: my-artifact
           path: |
-           bin/
-           include/
-           lib/
+           bin\
+           include\
+           lib\
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
